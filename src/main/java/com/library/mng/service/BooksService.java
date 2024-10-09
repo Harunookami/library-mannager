@@ -3,6 +3,7 @@ package com.library.mng.service;
 import com.library.mng.DTO.RecordBook;
 import com.library.mng.model.BookModel;
 import com.library.mng.repository.BooksRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,7 @@ public class BooksService {
     @Autowired
     private BooksRepository repository;
 
-    public BookModel save ( RecordBook body) {
+    public BookModel save (RecordBook body) {
        BookModel book = new BookModel();
        book.setAuthor(body.author());
        book.setTitle(body.title());
@@ -30,6 +31,7 @@ public class BooksService {
 
     public BookModel findById(Long id) {
         return repository.findById(id).orElse(null);
+
     }
 
 

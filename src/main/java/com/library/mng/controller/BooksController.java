@@ -4,7 +4,9 @@ import com.library.mng.DTO.RecordBook;
 import com.library.mng.model.BookModel;
 import com.library.mng.service.BooksService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 
 import java.util.List;
@@ -27,13 +29,16 @@ public class BooksController {
    }
 
    @GetMapping("/{id}")
-    public BookModel findById(@PathVariable("id") Long id) {
-
+    public BookModel findById(@PathVariable Long id) {
+        BookModel book = service.findById(id);
+        if (book == null) {
+            throw  new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found.");
+        }
        return service.findById(id);
    }
 
-   @PostMapping("/books/{id}")
-   public BookModel changed (@PathVariable Long id, @RequestBody RecordBook book){
+   @PutMapping ("/{id}")
+   public BookModel update(@PathVariable Long id, @RequestBody RecordBook book){
        return service.update( id, book);
    }
 
