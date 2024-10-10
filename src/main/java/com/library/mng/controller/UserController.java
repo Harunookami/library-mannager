@@ -29,7 +29,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public UserModel findUserById(@PathVariable long id) {
+    public UserModel findUserById(@PathVariable Long id) {
         UserModel user = service.getUserById(id);
         if (user == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found.");
@@ -39,12 +39,12 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public UserModel updateUser(@PathVariable long id, @RequestBody RecordUser user) {
+    public UserModel updateUser(@PathVariable Long id, @RequestBody RecordUser user) {
         return service.updateUser(id, user);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable long id) {
+    public void deleteUser(@PathVariable Long id) {
         service.deleteUserById(id);
     }
 }

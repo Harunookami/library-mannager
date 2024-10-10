@@ -16,9 +16,9 @@ public class UserService {
 
     public UserModel save(RecordUser body) {
         UserModel user = new UserModel();
-        user.setFullName(body.name());
+        user.setFullName(body.fullName());
         user.setCpf(body.cpf());
-        user.setTel(body.tel());
+        user.setPhone(body.phone());
         user.setEmail(body.email());
         user.setPassword(body.password());
 
@@ -36,9 +36,9 @@ public class UserService {
     public UserModel updateUser (Long id, RecordUser body) {
         UserModel user = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
-        user.setFullName(body.name());
+        user.setFullName(body.fullName());
         user.setCpf(body.cpf());
-        user.setTel(body.tel());
+        user.setPhone(body.phone());
         user.setEmail(body.email());
         user.setPassword(body.password());
 
