@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.awt.print.Book;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -62,7 +63,7 @@ public class LoanService {
         BookModel book = getBookById(recordLoan.bookId());
         UserModel user = getUserById(recordLoan.userId());
 
-        if (!areCreateLoanPreRequisitesValid(user, book)) {
+        if (!areUpdateLoanPreRequisitesValid(user, book)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Loan pre-requisites error. User does not exist or book is unavailable.");
         }
 
@@ -73,9 +74,15 @@ public class LoanService {
     }
 
     public void deleteLoanById(Long id) {
-        if (!loanRepository.existsById(id)) {
+        LoanModel loan = getLoanById(id);
+
+        if (loan == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Loan not found with id " + id);
         }
+
+        BookModel book = loan.getBookModel ();
+        book.increaseAmount();
+        booksRepository.save(book);
         loanRepository.deleteById(id);
     }
 
@@ -101,14 +108,14 @@ public class LoanService {
         return isUserValid(user) && isBookAvailable(book);
     }
 
-    private boolean areReturnLoanPreRequisitesValid(UserModel user, BookModel book) {
+    private boolean areUpdateLoanPreRequisitesValid(UserModel user, BookModel book) {
         return isUserValid(user) &&  book != null;
     }
 
     public LoanModel returnLoan(Long id, RecordLoan recordLoan) {
         BookModel book = getBookById(recordLoan.bookId());
         UserModel user = getUserById(recordLoan.userId());
-        if (!areReturnLoanPreRequisitesValid(user, book)) {
+        if (!areUpdateLoanPreRequisitesValid(user, book)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Loan pre-requisites error. User does not exist or book is unavailable.");
         }
         LoanModel loan = getLoanById(id);

@@ -6,7 +6,9 @@ import com.library.mng.repository.BooksRepository;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -54,7 +56,13 @@ public class BooksService {
     }
 
     public void delete(Long id) {
-        repository.deleteById(id);
+        BookModel book = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Book not found with id: " + id));
+        if (book.getAmount() <= 0){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Amount must be greater than zero");
+        }
+        book.decreaseAmount();
+        repository.save(book);
     }
 
 }

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Fetch;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -37,4 +38,7 @@ public class UserModel {
     @OneToMany(mappedBy = "userModel", fetch = FetchType.LAZY)
     @JsonBackReference
     private List<LoanModel> loans;
+
+    @Column (nullable = true)
+    private Date deletedAt;
 }

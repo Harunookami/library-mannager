@@ -1,5 +1,6 @@
 package com.library.mng.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,12 +19,14 @@ public class LoanModel {
 
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "userModel_id")
+    @JsonManagedReference
     private UserModel userModel ;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "bookModel_id")
+    @JsonManagedReference
     private BookModel bookModel;
 
     @Column (nullable = false)
