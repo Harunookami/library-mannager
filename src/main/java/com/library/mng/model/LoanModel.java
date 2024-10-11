@@ -3,6 +3,8 @@ package com.library.mng.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.util.Date;
 
@@ -16,18 +18,19 @@ public class LoanModel {
 
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userModel_id")
     private UserModel userModel ;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bookModel_id")
     private BookModel bookModel;
 
-    @Column
+    @Column (nullable = false)
+    @CreationTimestamp
     private Date created_at;
 
-    @Column
+    @Column(nullable = true)
     private Date returned_at;
 
 }

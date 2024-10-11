@@ -43,9 +43,16 @@ public class LoanController {
         return service.updateLoan(id, loan);
     }
 
+    @PutMapping("/return/{id}")
+    public LoanModel returnLoan(@PathVariable Long id, @RequestBody RecordLoan loan) {
+        return service.returnLoan(id, loan);
+    }
+
+
     @DeleteMapping("/{id}")
     public void deleteLoan(@PathVariable Long id){
         service.deleteLoanById(id);
     }
+
 
 }

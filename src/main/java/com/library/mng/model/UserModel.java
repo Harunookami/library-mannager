@@ -22,7 +22,7 @@ public class UserModel {
     @Column(length = 124, nullable = false)
     private String fullName;
 
-    @Column(length = 11, nullable = false)
+    @Column(length = 11, nullable = false, unique = true)
     private String cpf;
 
     @Column(length = 11, nullable = false)

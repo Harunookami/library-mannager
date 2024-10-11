@@ -4,10 +4,12 @@ import com.library.mng.DTO.RecordBook;
 import com.library.mng.model.BookModel;
 import com.library.mng.repository.BooksRepository;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BooksService {
@@ -15,14 +17,21 @@ public class BooksService {
     @Autowired
     private BooksRepository repository;
 
-    public BookModel save (RecordBook body) {
-       BookModel book = new BookModel();
-       book.setAuthor(body.author());
-       book.setTitle(body.title());
-       book.setPublisher(body.publisher());
-
-       return repository.save(book);
-
+    @Transactional
+    public BookModel saveOrUpdateBook (RecordBook body) {
+        Optional<BookModel> existingBook = repository.findByTitleAndAuthor(body.title(), body.author());
+        if (existingBook.isPresent()) {
+            BookModel book = existingBook.get();
+            book.setAmount(book.getAmount() + 1);
+            return repository.save(book);
+        } else {
+            BookModel newBook = new BookModel ();
+            newBook.setTitle(body.title());
+            newBook.setAuthor(body.author());
+            newBook.setPublisher(body.publisher());
+            newBook.setAmount(1);
+            return repository.save(newBook);
+        }
     }
 
     public List<BookModel> listAll(){

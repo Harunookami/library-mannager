@@ -17,11 +17,14 @@ public class BooksController {
 
     @Autowired
     private BooksService service;
+    @Autowired
+    private BooksService booksService;
 
     @PostMapping()
     public BookModel addBook(@RequestBody RecordBook book) {
-       return service.save(book);
+       return service.saveOrUpdateBook(book);
    }
+
 
    @GetMapping()
    public List<BookModel> listAll (){

@@ -10,7 +10,9 @@ import java.util.List;
 @Data
 @Entity
 @NoArgsConstructor
-@Table (name = "books")
+@Table(name = "books", uniqueConstraints = {
+        @UniqueConstraint(name = "UniqueTitleAndAuthor", columnNames = { "title", "author" })
+})
 
 public class BookModel {
     @Id
@@ -30,5 +32,19 @@ public class BookModel {
     @OneToMany(mappedBy = "bookModel", fetch = FetchType.LAZY)
     @JsonBackReference
     private List<LoanModel> loans;
+
+    private int amount;
+
+    public Boolean isAvailable(){
+        return amount > 0;
+    }
+
+    public void decreaseAmount(){
+        this.amount -= 1;
+    }
+
+    public void increaseAmount(){
+        this.amount += 1;
+    }
 }
 
